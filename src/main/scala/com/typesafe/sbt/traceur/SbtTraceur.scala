@@ -13,8 +13,8 @@ object Import {
 
   object TraceurKeys {
 
-    val sourceDir = SettingKey[File]("traceur-source-dir", "Source directory containing ES6 javascript files. Default: javascripts/")
-    val outputDir = SettingKey[File]("traceur-output-dir", "Output directory containing compiled ES6 javascript files. Default: javascripts/")
+    val sourceDir = SettingKey[String]("traceur-source-dir", "Source directory containing ES6 javascript files. Default: javascripts/")
+    val outputDir = SettingKey[String]("traceur-output-dir", "Output directory containing compiled ES6 javascript files. Default: javascripts/")
     val sourceFiles = SettingKey[Seq[String]]("traceur-source-files", "Source ES6 files to compile. Should just be the 'root' modules, traceur will pull the rest.")
     val outputFileName = SettingKey[String]("traceur-output-file-name", "Name of the output file containing compiled ES6 javascript files. Default: main.js")
     val sourceMaps = SettingKey[Boolean]("traceur-source-maps", "Enable source maps generation. Default: true")
@@ -40,14 +40,14 @@ object SbtTraceur extends AutoPlugin {
   import com.typesafe.sbt.web.SbtWeb.autoImport._
 
   override def projectSettings = Seq(
-    sourceDir := (sourceDirectory in Assets).value / "javascripts",
-    outputDir := (resourceManaged in Assets).value / "javascripts",
+    sourceDir := "javascripts",
+    outputDir := "javascripts",
     sourceFiles := Seq("main.js"),
     outputFileName := "main.js",
     sourceMaps := true,
     experimental := false,
     includeRuntime := true,
-    resourceManaged in traceur := webTarget.value,
+    resourceManaged in traceur := webTarget.value / traceur.key.label,
     traceur := runCompiler.dependsOn(webJarsNodeModules in Plugin).value
   )
 
@@ -58,10 +58,13 @@ object SbtTraceur extends AutoPlugin {
   private def runCompiler: Def.Initialize[Task[Pipeline.Stage]] = Def.task {
     mappings: Seq[PathMapping] =>
 
-      val outputFile = outputDir.value / outputFileName.value
-      val sourceFilesAbsolutePath = sourceFiles.value.map(f => sourceDir.value + "/" + f.toString)
+      val source = (sourceDirectory in Assets).value / sourceDir.value
+      val sourceFilesAbsolutePath = sourceFiles.value.map(f => source + "/" + f.toString)
+      val output = (resourceManaged in traceur).value / "build"
+      val outputFull = output / outputDir.value
+      val outputFile = outputFull / outputFileName.value
 
-      streams.value.log.info("[Traceur]\tCompiling with Traceur")
+      streams.value.log.info("[Traceur]\tCompiling with traceur-compiler v0.0.90")
 
       val parameters = (
         boolToParam(experimental.value, "--experimental")
@@ -96,17 +99,14 @@ object SbtTraceur extends AutoPlugin {
 
       if (includeRuntime.value) {
         val traceurRuntime = IO.read((webJarsNodeModulesDirectory in Plugin).value / "traceur" / "bin" / "traceur-runtime.js")
-        val traceurRuntimeOutput = outputDir.value / "traceur-runtime.js"
+        val traceurRuntimeOutput = outputFull / "traceur-runtime.js"
 
         IO.write(traceurRuntimeOutput, traceurRuntime)
       }
 
-      streams.value.log.info(s"[Traceur]\tCompilation terminated!")
+      val outputFiles = outputFull.listFiles.toSeq
 
-      val outputFiles = outputDir.value.listFiles.toSeq
-      val compiled = mappings.filter(f => f._2.startsWith("js/")) ++ (outputFiles pair relativeTo(Seq(webTarget.value))).toSeq
-
-      compiled
+      mappings.filter(f => f._2.startsWith(sourceDir.value.toString + "/")) ++ (outputFiles pair relativeTo(output)).toSeq
   }
 
 }

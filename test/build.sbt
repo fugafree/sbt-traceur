@@ -8,16 +8,19 @@ scalaVersion := "2.10.4"
 
 lazy val root = (project in file(".")).enablePlugins(SbtWeb)
 
-pipelineStages := Seq(traceur, concat, uglify)
+pipelineStages := Seq(traceur, uglify, concat, filter)
 
-TraceurKeys.sourceDir := (sourceDirectory in Assets).value / "js"
-TraceurKeys.outputDir := (resourceManaged in Assets).value.getParentFile.getParentFile / "js"
+TraceurKeys.sourceDir := "js"
+TraceurKeys.outputDir := "js"
 TraceurKeys.sourceMaps := false
 TraceurKeys.sourceFiles := Seq("app.js")
 TraceurKeys.outputFileName := "app.js"
 
 Concat.groups := Seq(
-  "js/main.js" -> group(Seq("js/traceur-runtime.js", "js/app.js"))
+  "js/main.min.js" -> group(Seq("js/traceur-runtime.min.js", "js/app.min.js"))
 )
 
 UglifyKeys.uglifyOps := UglifyOps.singleFile
+
+includeFilter in filter := "*.js"
+excludeFilter in filter := "main.min.js"
