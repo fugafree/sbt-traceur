@@ -1,46 +1,21 @@
-import bintray.Keys._
-
 sbtPlugin := true
 
-organization := "com.typesafe.sbt"
-
 name := "sbt-traceur"
+organization in ThisBuild := "com.typesafe.sbt"
+version in ThisBuild := "1.0.2"
+description := "sbt-web plugin to compile ES6 to ES5 with traceur-compiler from Google."
+licenses += ("MIT", url("https://github.com/LuigiPeace/sbt-traceur/blob/master/LICENSE"))
 
-version := "1.0.1"
-
-licenses += ("MIT", url("https://github.com/arielscarpinelli/sbt-traceur/blob/master/LICENSE"))
+publishMavenStyle := false
+bintrayRepository := "sbt-traceur"
+bintrayOrganization in bintray := None
 
 scalaVersion := "2.10.4"
 
-scalacOptions += "-feature"
+resolvers += Resolver.typesafeRepo("releases")
+
+addSbtPlugin("com.typesafe.sbt" % "sbt-js-engine" % "1.2.1")
 
 libraryDependencies ++= Seq(
-  "org.webjars" % "traceur" % "0.0.79-1"
+  "org.webjars" % "traceur" % "0.0.90"
 )
-
-resolvers ++= Seq(
-  "Typesafe Releases Repository" at "http://repo.typesafe.com/typesafe/releases/",
-  Resolver.url("sbt snapshot plugins", url("http://repo.scala-sbt.org/scalasbt/sbt-plugin-snapshots"))(Resolver.ivyStylePatterns),
-  Resolver.sonatypeRepo("snapshots"),
-  "Typesafe Snapshots Repository" at "http://repo.typesafe.com/typesafe/snapshots/",
-  Resolver.mavenLocal
-)
-
-addSbtPlugin("com.typesafe.sbt" % "sbt-js-engine" % "1.0.2")
-
-publishMavenStyle := false
-
-publishTo := {
-  if (isSnapshot.value) Some(Classpaths.sbtPluginSnapshots)
-  else Some(Classpaths.sbtPluginReleases)
-}
-
-bintrayPublishSettings
-
-repository in bintray := "sbt-plugins"
-
-bintrayOrganization in bintray := None
-
-scriptedSettings
-
-scriptedLaunchOpts <+= version apply { v => s"-Dproject.version=$v" }
