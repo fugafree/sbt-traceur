@@ -1,4 +1,4 @@
-organization := "com.typesafe.sbt"
+organization := "rayshader"
 
 name := "sbt-traceur-test"
 

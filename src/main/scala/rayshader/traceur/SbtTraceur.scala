@@ -1,4 +1,4 @@
-package com.typesafe.sbt.traceur
+package rayshader.traceur
 
 import sbt._
 import sbt.Keys._
@@ -34,10 +34,10 @@ object SbtTraceur extends AutoPlugin {
 
   import com.typesafe.sbt.jse.SbtJsEngine.autoImport.JsEngineKeys._
   import com.typesafe.sbt.jse.SbtJsTask.autoImport.JsTaskKeys._
-  import com.typesafe.sbt.traceur.Import.TraceurKeys._
-  import com.typesafe.sbt.traceur.Import._
   import com.typesafe.sbt.web.Import.WebKeys._
   import com.typesafe.sbt.web.SbtWeb.autoImport._
+  import rayshader.traceur.Import.TraceurKeys._
+  import rayshader.traceur.Import._
 
   override def projectSettings = Seq(
     sourceDir := "javascripts",
