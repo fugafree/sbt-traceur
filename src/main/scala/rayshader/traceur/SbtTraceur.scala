@@ -9,7 +9,7 @@ import xsbti.Severity
 
 object Import {
 
-  val traceur = TaskKey[Pipeline.Stage]("traceur", "sbt-web plugin to compile ES6 to ES5 with traceur-compiler from Google.")
+  val traceur = TaskKey[Pipeline.Stage]("traceur", "sbt-web plugin to compile ES6 to ES5 with traceur-compiler by Google.")
 
   object TraceurKeys {
 
