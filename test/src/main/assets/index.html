@@ -2,13 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SbtTraceur Test</title>
+    <title>rayshader.sbt-traceur</title>
 
     <base href="../../../target/web/stage/">
 
-    <script src="js/main.min.js"></script>
+    <style>
+        .description {
+            margin-bottom: 0px;
+            padding: 16px;
+
+            border-radius: 4px;
+
+            background-color: rgba(0, 0, 0, .1);
+        }
+
+        .output {
+            padding: 16px;
+            border-radius: 4px;
+            background-color: rgba(181, 0, 0, .4);
+        }
+
+        ul {
+            list-style-position: inside;
+        }
+    </style>
 </head>
 <body>
+    <main>
+        <h1>Project: sbt-traceur v1.0.2</h1>
+        <h3>Dependency: traceur-compiler v0.0.90</h3>
+        <br>
+        <h3>Test #1</h3>
+        <h3>Description</h3>
+        <p class="description">
+            Compile ES6 to ES5 from the main entry point "app.js" javascript file.<br>
+            Output an "app.js" javascript file.<br>
+            Output "traceur-runtime.js" javascript file.<br>
+            Source and output directories are "js".<br>
+            sbt-uglify and sbt-concat are used to show that sbt-traceur is now
+            integrated in the pipeline stage.
+        </p>
+        <h3>Output:</h3>
+        <ul class="output" id="humans-list"></ul>
+    </main>
 
+    <script>
+        var $output = document.querySelector(".output");
+
+        $output.addEventListener("DOMNodeInserted", function() {
+            if ($output.innerHTML.length !== 0)
+                $output.style.backgroundColor = "rgba(11, 181, 0, .4)";
+        });
+    </script>
+    <script src="js/main.min.js"></script>
 </body>
 </html>
