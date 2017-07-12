@@ -2,11 +2,11 @@ sbtPlugin := true
 
 name := "sbt-traceur"
 organization := "rayshader"
-version := "1.0.2"
-description := "sbt-web plugin to compile ES6 to ES5 with traceur-compiler by Google."
+version := "2.0.0"
+description := "sbt-web plugin to compile ES6 to ES5 with traceur-compiler."
 licenses += ("MIT", url("https://github.com/LuigiPeace/sbt-traceur/blob/master/LICENSE"))
 
-publishMavenStyle := false
+publishMavenStyle := true
 bintrayRepository := "sbt"
 bintrayOrganization in bintray := None
 
@@ -20,4 +20,4 @@ libraryDependencies ++= Seq(
   "org.webjars" % "traceur" % "0.0.90"
 )
 
-publishTo := Some("Bintray API Realm" at "https://api.bintray.com/content/rayshader/sbt/sbt-traceur/1.0.2")
+publishTo := Some("Bintray API Realm" at s"https://api.bintray.com/content/rayshader/sbt/sbt-traceur/2.0.0")

@@ -1,43 +1,54 @@
 sbt-traceur
 ===========
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/LuigiPeace/sbt-traceur/blob/master/LICENSE)
+![Version: 2.0.0](https://img.shields.io/badge/version-2.0.0-green.svg)
 
-sbt-web plugin to compile ES6 to ES5 with [traceur-compiler](https://github.com/google/traceur-compiler) by Google.
+sbt-web plugin to compile ES6 to ES5 with [traceur-compiler](https://github.com/google/traceur-compiler).
 
 Changelog
 ---------
-
 Version | Changes
 --------|-----------------------------------------
- 1.0.2  | Upgrade traceur-compiler to v0.0.90.<br>Refactor plugin to use pipeline stage.
+ 2.0.0  | Upgrade traceur-compiler to v0.0.90.<br>Refactor plugin to use pipeline stage.
+ 1.0.2  | First try with Scala, sbt and Bintray. Experimental, don't use it!
  1.0.1  | Last version forked from arielscarpinelli/sbt-traceur
 
 I decided to fork the sbt-web plugin of [arielscarpinelli](https://github.com/arielscarpinelli) because I couldn't control `traceur` within the pipeline stage.
 You can now call `traceur` in the pipeline stage where ever you want.
 
+
 How to use
 ----------
-
-To use this plugin use the addSbtPlugin command within your project's `plugins.sbt` file:
+You first need to add this resolver in your project's `plugins.sbt` file:
 
 ```scala
-    addSbtPlugin("com.typesafe.sbt" % "sbt-traceur" % "1.0.2")
+    resolvers += Resolver.bintrayRepo("rayshader", "sbt")
 ```
 
-Your project's build file also needs to enable sbt-web plugins. Within your `build.sbt` file:
+Then, add the dependency with the `addSbtPlugin` command:
+
+```scala
+    addSbtPlugin("rayshader" % "sbt-traceur" % "2.0.0")
+```
+
+Your project's `build.sbt` file also needs to enable sbt-web plugins:
 
 ```scala
     lazy val root = (project in file(".")).enablePlugins(SbtWeb)
 ```
 
-Then, you need to include the plugin into the pipeline stage like:
+Finally, you need to include the plugin into the pipeline stage like:
 
 ```scala
     pipelineStages := Seq(traceur)
 ```
 
+NB: the plugin will remove .js files from the `sourceDir` path. As only the output file seems necessary.
+This is due to an issue encountered with sbt-uglify. If you want to keep these files in your pipeline
+you can turn off the option `removeJs`.
+
 Example
 -------
-
 You may want to compile ES6 to ES5, then minify javascript and concat everything.
 Let's say your main entry point of ES6 code is `app.js`.
 Then, you can minify `app.js` and `traceur-runtime.js`.
@@ -49,7 +60,7 @@ Finally you can concat the whole to output a single `main.min.js` file:
     TraceurKeys.sourceDir := "js"
     TraceurKeys.outputDir := "js"
     TraceurKeys.sourceFiles := Seq("app.js")
-    TraceurKeys.outputFileName := "app.js"
+    TraceurKeys.outputFile := "app.js"
     TraceurKeys.sourceMaps := false
     
     UglifyKeys.uglifyOps := UglifyOps.singleFile
@@ -59,29 +70,38 @@ Finally you can concat the whole to output a single `main.min.js` file:
     )
 ```
 
+
 Configuration
 -------------
-
 All options are available within the object `TraceurKeys`.
 For example, to disable `sourceMaps` you'll do:
 
 ```scala
+    import rayshader.traceur._
+    
     TraceurKeys.sourceMaps := false
 ```
-
-in your `build.sbt` file.
 
 Option          | Description                                                                                          | Default
 ----------------|------------------------------------------------------------------------------------------------------|----------
 sourceDir       | The relative path where your ES6 files are located.                                                  | `javascripts`
-outputDir       | The relative path where your compiled ES6 files will be located                                      | `javascripts`
-sourceFiles     | Relative paths of files to compile. Should just be the 'root' module, traceur will pull the rest.    | `main.js`
-outputFileName  | The name of the compiled file.                                                                       | `main.js`
+outputDir       | The relative path where your compiled ES6 files will be located.                                     | `javascripts`
+sourceFiles     | Relative paths of the files to compile. Should just be the 'root' module, traceur will pull the rest.| `main.js`
+outputFile      | The name of the compiled file.                                                                       | `main.js`
 sourceMaps      | Enable source maps generation.                                                                       | `true`
-experimental    | Turns on all experimental features                                                                   | `false`
-includeRuntime  | If traceur-runtime.js code should be included in the outputDir.                                      | `true`
+experimental    | Turns on all experimental features.                                                                  | `false`
+includeRuntime  | If traceur-runtime.js code should be copied in the outputDir.                                        | `true`
+removeJs        | Remove .js files from sourceDir within the pipeline.                                                 | `true`
+
+
+How to test
+-----------
+ 1. First clone the project.
+ 2. Use the following commands with sbt: `clean webStage` from `test/` directory.
+ 3. Open `index.html` from within `target/web/stage/`.
+ 4. Output shall show some texts and display a green background.
+
 
 More
 ----
-
-Feel free to contribute for more features and bug fixes through the tickets system :).
+Feel free to contribute for more features and bug fixes through issues :).

@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+$primary-color: #FF00FF;
+$second-color: #00FFFF;
+
+@mixin kikou($size) {
+  font-family: monospace;
+  font-size: $size;
+  color: $primary-color;
+}
+
+.toto {
+  color: $primary-color;
+  @include kikou(2.0em);
+}
+
+.tutu {
+  color: $second-color;
+  @include kikou(1.0em);
+}

@@ -1,4 +1,6 @@
-addSbtPlugin("rayshader" %% "sbt-traceur" % "1.0.2")
+addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.8")
+
+addSbtPlugin("rayshader" % "sbt-traceur" % "2.0.0")
 
 addSbtPlugin("net.ground5hark.sbt" % "sbt-concat" % "0.1.9")
 

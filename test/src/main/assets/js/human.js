@@ -8,7 +8,7 @@ export class Human {
     }
 
     sayHello() {
-        const sex = (this.sex === true) ? "man" : "woman";
+        const sex = (this.isMan()) ? "man" : "woman";
 
         return `Hello, my name is ${this.getFullname()} and I am a ${sex} of ${this.getAge()} years old.`;
     }
