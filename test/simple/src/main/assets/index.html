@@ -5,7 +5,8 @@
     <title>rayshader.sbt-traceur</title>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <base href="../../../target/web/stage/">
 
     <style>
         body {
@@ -34,27 +35,25 @@
 </head>
 <body>
     <main>
-        <h1>Project: sbt-traceur v1.0.2</h1>
-        <h3>Dependency: traceur-compiler v0.0.90</h3>
+        <h1>Project: sbt-traceur v2.1.0</h1>
+        <h3>Dependency: traceur-compiler v0.0.111</h3>
         <br>
-        <h3>Test #1</h3>
         <h3>Description:</h3>
         <p class="description">
-            Compile ES6 to ES5 from the main entry point "app.js" javascript file.<br>
-            Output an "app.js" javascript file.<br>
-            Output "traceur-runtime.js" javascript file.<br>
+            Compile ES6 to ES5 from the root module "app.js" file.<br>
+            Output an "app.js" compiled file.<br>
+            Output "traceur-runtime.js" file.<br>
             Source and output directories are "js".<br>
-            sbt-uglify and sbt-concat are used to show that sbt-traceur is now
-            integrated in the pipeline stage.
+            sbt-uglify and sbt-concat are used to show that sbt-traceur is now integrated in the pipeline stage.
         </p>
         <h3>Code:</h3>
         <pre><code class="javascript">
             import { Man } from "./man.js";
             import { Woman } from "./woman.js";
 
-            const alice = new Woman("Alice", "Wonder", new Date("1980-01-06"));
-            const bob = new Man("Bob", "Over", new Date("1988-05-12"));
-            const humans = [alice, bob];
+            const scarlett = new Woman("Scarlett", "Johansson", new Date("1984-11-22"));
+            const will = new Man("Will", "Smith", new Date("1968-09-25"));
+            const humans = [scarlett, will];
             const $list = document.querySelector("#humans-list");
 
             humans.forEach(function(human) {
@@ -70,6 +69,7 @@
         <ul class="output" id="humans-list"></ul>
     </main>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
     <script>
         var $output = document.querySelector(".output");
 

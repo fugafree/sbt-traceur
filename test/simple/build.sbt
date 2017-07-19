@@ -2,9 +2,9 @@ import org.irundaia.sbt.sass._
 
 organization := "rayshader"
 
-name := "sbt-traceur-test"
+name := "sbt-traceur-test-simple"
 
-version := "2.0.0"
+version := "2.1.0"
 
 scalaVersion := "2.10.4"
 
@@ -18,7 +18,6 @@ SassKeys.syntaxDetection := ForceScss
 
 TraceurKeys.sourceDir := "js"
 TraceurKeys.outputDir := "js"
-TraceurKeys.sourceMaps := false
 TraceurKeys.sourceFiles := Seq("app.js")
 TraceurKeys.outputFile := "app.js"
 

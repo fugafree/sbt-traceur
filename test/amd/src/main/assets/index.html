@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rayshader.sbt-traceur</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+    <base href="../../../target/web/stage/">
+
+    <style>
+        body {
+            font-family: monospace;
+        }
+
+        .description {
+            margin-bottom: 0px;
+            padding: 16px;
+
+            border-radius: 4px;
+
+            background-color: rgba(0, 0, 0, .1);
+        }
+
+        .output {
+            padding: 16px;
+            border-radius: 4px;
+            background-color: rgba(181, 0, 0, .4);
+        }
+
+        ul {
+            list-style-position: inside;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Project: sbt-traceur v2.1.0</h1>
+        <h3>Dependency: traceur-compiler v0.0.111</h3>
+        <br>
+        <h3>Description:</h3>
+        <p class="description">
+            Compile ES6 to ES5 from input dir to output dir.<br>
+            Output "traceur-runtime.js" file.<br>
+            Input and output directories are "js".<br>
+            sbt-uglify and sbt-concat are used to show that sbt-traceur is now
+            integrated in the pipeline stage.<br>
+            Use RequireJS in example to show usage of compiled assets in AMD format.
+        </p>
+        <h3>Code from "app.js":</h3>
+        <pre><code class="javascript">
+            import { Man } from "./man.js";
+            import { Woman } from "./woman.js";
+
+            const scarlett = new Woman("Scarlett", "Johansson", new Date("1984-11-22"));
+            const will = new Man("Will", "Smith", new Date("1968-09-25"));
+            const humans = [scarlett, will];
+            const $list = document.querySelector("#humans-list");
+
+            humans.forEach(function(human) {
+                const msg = human.sayHello();
+                const $li = document.createElement("li");
+                const $text = document.createTextNode(msg);
+
+                $li.appendChild($text);
+                $list.appendChild($li);
+            });
+        </code></pre>
+        <h3>Code from "index.html":</h3>
+        <pre><code class="javascript">
+            define("root", ["app", "woman", "man"], function(app, Woman, Man) {
+                Woman = Woman.Woman;
+                Man = Man.Man;
+                var angelina = new Woman("Angelina", "Jolie", new Date("1975-06-04"));
+                var bradley = new Man("Bradley", "Cooper", new Date("1975-01-05"));
+                var humans = [angelina, bradley];
+                var $list = document.querySelector("#humans-list");
+
+                humans.forEach(function(human) {
+                    var msg = human.sayHello();
+                    var $li = document.createElement("li");
+                    var $text = document.createTextNode(msg);
+
+                    $li.appendChild($text);
+                    $list.appendChild($li);
+                });
+            });
+        </code></pre>
+        <h3>Output:</h3>
+        <ul class="output" id="humans-list"></ul>
+    </main>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        var $output = document.querySelector(".output");
+
+        $output.addEventListener("DOMNodeInserted", function() {
+            if ($output.innerHTML.length !== 0)
+                $output.style.backgroundColor = "rgba(11, 181, 0, .4)";
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="js/traceur-runtime.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script>
+    <script>
+        define("root", ["app", "woman", "man"], function(app, Woman, Man) {
+            Woman = Woman.Woman;
+            Man = Man.Man;
+            var angelina = new Woman("Angelina", "Jolie", new Date("1975-06-04"));
+            var bradley = new Man("Bradley", "Cooper", new Date("1975-01-05"));
+            var humans = [angelina, bradley];
+            var $list = document.querySelector("#humans-list");
+
+            humans.forEach(function(human) {
+                var msg = human.sayHello();
+                var $li = document.createElement("li");
+                var $text = document.createTextNode(msg);
+
+                $li.appendChild($text);
+                $list.appendChild($li);
+            });
+        });
+
+        requirejs.config({
+            baseUrl: "../../../target/web/stage/js/",
+            paths: {
+                "app": "app.min",
+                "human": "human.min",
+                "woman": "woman.min",
+                "man": "man.min"
+            }
+        });
+
+        require(["root"]);
+    </script>
+</body>
+</html>

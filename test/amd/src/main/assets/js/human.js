@@ -8,9 +8,7 @@ export class Human {
     }
 
     sayHello() {
-        const sex = (this.isMan()) ? "man" : "woman";
-
-        return `Hello, my name is ${this.getFullname()} and I am a ${sex} of ${this.getAge()} years old.`;
+        return `Hello, my name is ${this.getFullname()} and I am a ${this.getSex()} of ${this.getAge()} years old.`;
     }
 
     getFullname() {
@@ -18,17 +16,21 @@ export class Human {
     }
 
     getAge() {
-        let ageDiff = Date.now() - this.birthday.getTime();
-        let ageDate = new Date(ageDiff);
+        const ageDiff = Date.now() - this.birthday.getTime();
+        const ageDate = new Date(ageDiff);
 
         return Math.abs(ageDate.getUTCFullYear() - 1970);
     }
 
-    isMan() {
+    getSex() {
+        return (this._isMan()) ? "man" : "woman";
+    }
+
+    _isMan() {
         return this.sex;
     }
 
-    isWoman() {
+    _isWoman() {
         return !this.sex;
     }
 }
