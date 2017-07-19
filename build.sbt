@@ -21,4 +21,4 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "traceur" % "0.0.111"
 )
 
-publishTo := Some("Bintray API Realm" at s"https://api.bintray.com/content/rayshader/sbt/sbt-traceur/2.0.1")
+publishTo := Some("Bintray API Realm" at s"https://api.bintray.com/content/rayshader/sbt/sbt-traceur/2.1.0")
