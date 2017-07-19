@@ -1,7 +1,7 @@
 sbt-traceur
 ===========
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/LuigiPeace/sbt-traceur/blob/master/LICENSE)
-![Version: 2.0.0](https://img.shields.io/badge/version-2.0.0-green.svg)
+![Version: 2.1.0](https://img.shields.io/badge/version-2.1.0-green.svg)
 
 sbt-web plugin to compile ES6 to ES5 with [traceur-compiler](https://github.com/google/traceur-compiler).
 
@@ -9,6 +9,7 @@ Changelog
 ---------
 Version | Changes
 --------|-----------------------------------------
+ 2.1.0  | Upgrade traceur-compiler to v0.0.111.<br>Improve plugin by supporting all traceur-compiler options.
  2.0.0  | Upgrade traceur-compiler to v0.0.90.<br>Refactor plugin to use pipeline stage.
  1.0.2  | First try with Scala, sbt and Bintray. Experimental, don't use it!
  1.0.1  | Last version forked from arielscarpinelli/sbt-traceur
@@ -28,7 +29,7 @@ You first need to add this resolver in your project's `plugins.sbt` file:
 Then, add the dependency with the `addSbtPlugin` command:
 
 ```scala
-    addSbtPlugin("rayshader" % "sbt-traceur" % "2.0.0")
+    addSbtPlugin("rayshader" % "sbt-traceur" % "2.1.0")
 ```
 
 Your project's `build.sbt` file also needs to enable sbt-web plugins:
@@ -61,7 +62,6 @@ Finally you can concat the whole to output a single `main.min.js` file:
     TraceurKeys.outputDir := "js"
     TraceurKeys.sourceFiles := Seq("app.js")
     TraceurKeys.outputFile := "app.js"
-    TraceurKeys.sourceMaps := false
     
     UglifyKeys.uglifyOps := UglifyOps.singleFile
     
@@ -74,32 +74,47 @@ Finally you can concat the whole to output a single `main.min.js` file:
 Configuration
 -------------
 All options are available within the object `TraceurKeys`.
-For example, to disable `sourceMaps` you'll do:
+For example, to enable `sourceMaps` you'll do:
 
 ```scala
     import rayshader.traceur._
     
-    TraceurKeys.sourceMaps := false
+    TraceurKeys.sourceMaps := true
 ```
+
+For options `modules` and `moduleName`, you will found enumerations in the object `TraceurEnums`:
+
+```scala
+    import rayshader.traceur._
+    
+    TraceurKeys.modules := TraceurEnums.AMD
+    TraceurKeys.moduleName := TraceurEnums.Named
+```
+
 
 Option          | Description                                                                                          | Default
 ----------------|------------------------------------------------------------------------------------------------------|----------
-sourceDir       | The relative path where your ES6 files are located.                                                  | `javascripts`
-outputDir       | The relative path where your compiled ES6 files will be located.                                     | `javascripts`
-sourceFiles     | Relative paths of the files to compile. Should just be the 'root' module, traceur will pull the rest.| `main.js`
-outputFile      | The name of the compiled file.                                                                       | `main.js`
-sourceMaps      | Enable source maps generation.                                                                       | `true`
-experimental    | Turns on all experimental features.                                                                  | `false`
-includeRuntime  | If traceur-runtime.js code should be copied in the outputDir.                                        | `true`
-removeJs        | Remove .js files from sourceDir within the pipeline.                                                 | `true`
+sourceDir       | The relative path where your ES6 files are located. | `javascripts`
+outputDir       | The relative path where your compiled ES6 files will be located. | `javascripts`
+useDir          | If true will use the option `--dir in out` where `in` and `out` are `sourceDir` and `outputDir`. | `false`
+sourceFiles     | Relative paths of the files to compile. Should just be the 'root' module, traceur will pull the rest. | `Seq("main.js")`
+outputFile      | The name of the compiled file. | `main.js`
+sourceMaps      | Enable source maps generation. | `false`
+experimental    | Turns on all experimental features. | `false`
+modules         | Select the output format for modules between AMD, CommonJS, Closure, Instantiate, Inline, Bootstrap. | `Bootstrap`
+moduleName      | `Named` for named, `Anonymous` for anonymous modules; `Default` depends on `modules`. | `Default`
+options         | Provide extra options to traceur-compiler. | 
+includeRuntime  | If traceur-runtime.js code should be copied in the outputDir. | `true`
+removeJs        | Remove .js files from sourceDir within the pipeline. | `true`
 
 
 How to test
 -----------
  1. First clone the project.
- 2. Use the following commands with sbt: `clean webStage` from `test/` directory.
- 3. Open `index.html` from within `target/web/stage/`.
- 4. Output shall show some texts and display a green background.
+ 2. Use the command `clean compile package publishLocal` with sbt to compile and publish locally the plugin.
+ 3. Use commands `clean webStage` within `test/[NAME_OF_THE_TEST]` directory to try the plugin.
+ 3. Open `index.html` from `src/main/assets/` directory.
+ 4. Output section shall show some texts and display a green background.
 
 
 More
