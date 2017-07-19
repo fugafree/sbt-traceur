@@ -82,13 +82,17 @@ For example, to enable `sourceMaps` you'll do:
     TraceurKeys.sourceMaps := true
 ```
 
-For options `modules` and `moduleName`, you will found enumerations in the object `TraceurEnums`:
+For option `modules`, you will found constants in the object `TraceurModules`.
+
+For option `moduleName`, you will found constants in the object `TraceurModuleName`.
+
+For example:
 
 ```scala
     import rayshader.traceur._
     
-    TraceurKeys.modules := TraceurEnums.AMD
-    TraceurKeys.moduleName := TraceurEnums.Named
+    TraceurKeys.modules := TraceurModules.AMD
+    TraceurKeys.moduleName := TraceurModuleName.Named
 ```
 
 
