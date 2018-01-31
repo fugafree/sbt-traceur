@@ -29,7 +29,7 @@ You first need to add this resolver in your project's `plugins.sbt` file:
 Then, add the dependency with the `addSbtPlugin` command:
 
 ```scala
-    addSbtPlugin("rayshader" % "sbt-traceur" % "2.1.0")
+    addSbtPlugin("rayshader" % "sbt-traceur" % "2.2.0-SNAPSHOT")
 ```
 
 Your project's `build.sbt` file also needs to enable sbt-web plugins:

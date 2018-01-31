@@ -4,7 +4,7 @@ organization := "rayshader"
 
 name := "sbt-traceur-test-simple"
 
-version := "2.1.0"
+version := "2.2.0-SNAPSHOT"
 
 scalaVersion := "2.10.4"
 

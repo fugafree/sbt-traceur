@@ -1,4 +1,4 @@
-addSbtPlugin("rayshader" % "sbt-traceur" % "2.1.0")
+addSbtPlugin("rayshader" % "sbt-traceur" % "2.2.0-SNAPSHOT")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-uglify" % "1.0.4")
 
